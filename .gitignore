@@ -1,3 +1,4 @@
+
 # Numerous always-ignore extensions
 *.diff
 *.err
@@ -30,10 +31,16 @@ dwsync.xml
 *.komodoproject
 .komodotools
 
-# Folders to ignore
+# Folders and files to ignore
 .hg
 .svn
 .CVS
 intermediate
 .idea
 cache
+
+/vendor/
+wpcs/
+composer.json
+composer.lock
+

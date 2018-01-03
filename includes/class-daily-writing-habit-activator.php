@@ -20,7 +20,7 @@
  * @subpackage Plugin_Name/includes
  * @author     Your Name <email@example.com>
  */
-class Plugin_Name_Activator {
+class Daily_Writing_Habit_Activator {
 
 	/**
 	 * Short Description. (use period)
