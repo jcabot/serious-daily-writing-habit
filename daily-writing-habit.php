@@ -1,28 +1,30 @@
 <?php
 
 /**
- * The plugin bootstrap file
  *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
- * @link              http://jordicabot.com
+ * @link              https://github.com/jcabot/writing-habit-wp-plugin
  * @since             1.0.0
  * @package           Daily_Writing_Habit
  *
  * @wordpress-plugin
  * Plugin Name:       Daily Writing Habit
- * Plugin URI:        http://example.com/plugin-name-uri/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin URI:        https://github.com/jcabot/writing-habit-wp-plugin
+ * Description:       Helps in developing a writing habit by setting and tracking a daily (or weekly) writing goal
  * Version:           1.0.0
- * Author:            Your Name or Your Company
- * Author URI:        http://example.com/
+ * Author:            Jordi Cabot
+ * Author URI:        http://jordicabot.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       daily-writing-habit
  * Domain Path:       /languages
+ *
+ * This plugin is distributed under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or  any later version.
+ *
+ * This plugin is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  */
 
 // If this file is called directly, abort.
