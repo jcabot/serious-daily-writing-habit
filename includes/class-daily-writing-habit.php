@@ -134,6 +134,19 @@ class Daily_Writing_Habit {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+
+		$plugin_widget = new Daily_Writing_Habit_Dashboard_Widget( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'wp_dashboard_setup', $plugin_widget, 'add_dashboard_widget' );
+
+
+		$plugin_settings = new Daily_Writing_Habit_Settings_Page( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'admin_menu', $plugin_settings, 'add_settings_page' );
+		$this->loader->add_action( 'admin_init', $plugin_settings, 'init_settings_page' );
+
+
+
+
+
 	}
 
 
