@@ -28,20 +28,8 @@ class Daily_Writing_Habit_Settings_Page{
 	}
 
 
-	public function add_settings_page() {
 
-		add_submenu_page(
-			'dwh',
-			esc_html__( 'Writing goals', 'text_domain' ),
-			esc_html__( 'Writing goals configuration', 'text_domain' ),
-			'manage_options',
-			'dwh-settings',
-			'settings_page_layout'
-		);
-
-	}
-
-	public function init_settings_page() {
+	public function init_settings() {
 
 		register_setting(
 			'settings_habit_group',
@@ -56,16 +44,23 @@ class Daily_Writing_Habit_Settings_Page{
 		);
 
 		add_settings_field(
-			'number_words',
-			__( 'number_words_label', 'text_domain' ),
-			array( $this, 'render_number_words_field' ),
+			'target_number_words',
+			__( 'target_number_words_label', 'text_domain' ),
+			array( $this, 'render_target_number_words_field' ),
 			'habit_target_options',
 			'habit_target_options_section'
 		);
 		add_settings_field(
-			'daily_or_weekly',
-			__( 'daily_or_weekly_label', 'text_domain' ),
-			array( $this, 'render_daily_or_weekly_field' ),
+			'exclude_counting_pages',
+			__( 'exclude_counting_pages_label', 'text_domain' ),
+			array( $this, 'render_exclude_counting_pages_field' ),
+			'habit_target_options',
+			'habit_target_options_section'
+		);
+		add_settings_field(
+			'number_days_show_habit',
+			__( 'number_days_show_habit_label', 'text_domain' ),
+			array( $this, 'render_number_days_show_habit_field' ),
 			'habit_target_options',
 			'habit_target_options_section'
 		);
@@ -93,33 +88,47 @@ class Daily_Writing_Habit_Settings_Page{
 
 	}
 
-	function render_number_words_field() {
+	function render_target_number_words_field() {
 
 		// Retrieve data from the database.
 		$options = get_option( 'habit_target_options' );
 
 		// Set default value.
-		$value = isset( $options['number_words'] ) ? $options['number_words'] : '750';
+		$value = isset( $options['target_number_words'] ) ? $options['target_number_words'] : '750';
 
 		// Field output.
-		echo '<input type="number" name="habit_target_options[number_words]" class="regular-text number_words_field" placeholder="' . esc_attr__( '', 'text_domain' ) . '" value="' . esc_attr( $value ) . '">';
+		echo '<input type="number" name="habit_target_options[target_number_words]" class="regular-text target_number_words_field" placeholder="' . esc_attr__( '', 'text_domain' ) . '" value="' . esc_attr( $value ) . '">';
 		echo '<p class="description">' . __( 'Number of words you want to set as goal', 'text_domain' ) . '</p>';
 
 	}
 
-	function render_daily_or_weekly_field() {
+	function render_exclude_counting_pages_field() {
 
 		// Retrieve data from the database.
 		$options = get_option( 'habit_target_options' );
 
 		// Set default value.
-		$value = isset( $options['daily_or_weekly'] ) ? $options['daily_or_weekly'] : '';
+		$value = isset( $options['exclude_counting_pages'] ) ? $options['exclude_counting_pages'] : 'True';
 
 		// Field output.
-		echo '<input type="radio" name="daily_or_weekly" class="daily_or_weekly_field" value="' . $value['daily'] . '" ' . checked( $value['daily'], 'daily', false ) . '> ' . __( 'daily_label', 'text_domain' ) . '<br>';
-		echo '<input type="radio" name="daily_or_weekly" class="daily_or_weekly_field" value="' . $value['weekly'] . '" ' . checked( $value['weekly'], 'weekly', false ) . '> ' . __( 'weekly_label', 'text_domain' ) . '<br>';
-		echo '<p class="description">' . __( 'Should this be a daily or weekly goal?', 'text_domain' ) . '</p>';
+		echo '<input type="checkbox" name="habit_target_options[exclude_counting_pages]" class="exclude_counting_pages_field" value="1" ' . checked( $value, 'checked', false ) . '> ' . __( '', 'text_domain' );
+		echo '<span class="description">' . __( 'Should writing of pages be part of your daily word count?', 'text_domain' ) . '</span>';
 
 	}
+
+	function render_number_days_show_habit_field() {
+
+		// Retrieve data from the database.
+		$options = get_option( 'habit_target_options' );
+
+		// Set default value.
+		$value = isset( $options['number_days_show_habit'] ) ? $options['number_days_show_habit'] : '30';
+
+		// Field output.
+		echo '<input type="number" name="habit_target_options[number_days_show_habit]" class="regular-text number_days_show_habit_field" placeholder="' . esc_attr__( '', 'text_domain' ) . '" value="' . esc_attr( $value ) . '">';
+		echo '<p class="description">' . __( 'Number of days to visualize when displaying your writing history', 'text_domain' ) . '</p>';
+
+	}
+
 
 }

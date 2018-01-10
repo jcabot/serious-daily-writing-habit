@@ -9,7 +9,6 @@
  */
 class Daily_Writing_Habit_Dashboard_Widget {
 
-
 	private $plugin_name;
 
 	private $version;
@@ -36,13 +35,26 @@ class Daily_Writing_Habit_Dashboard_Widget {
 
 	public function render_dashboard_widget() {
 
-		$html = 'test test for the dashboard widget';
+		$inc=get_today_writing_increment();
+		$target=get_option('target_number_words');
+
+		if (isset($target)) {
+
+			if ( $inc == 0 ) {
+				$html = 'Time is running! Get to work and start writing!';
+			} elseif ( $inc >= $target ) {
+				$html = 'Well done! You are good to go. Rest a bit and come back tomorrow for more writing';
+			} else{
+				$html = 'You are getting there! Keep pushing your writing. Still time to reach your goal. Do NOT disappoint yourself';
+			}
+
+		}else{
+			$html='Go to the Daily Writing Habit Plugin settings page to set your writing target goals';
+		}
 
 		echo $html;
 
 	}
-
-
 
 }
 

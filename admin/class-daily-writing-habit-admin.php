@@ -100,4 +100,41 @@ class Daily_Writing_Habit_Admin {
 
 	}
 
+	public function get_today_writing_increment() {
+
+		$today = getdate();
+		$args = array(
+			'date_query' => array(
+				'relation' => 'OR',
+				array(    // returns posts created today
+					'year'  => $today['year'],
+					'month' => $today['mon'],
+					'day'   => $today['mday'],
+				),
+				array(    // returns posts modified today
+
+					'column' => 'post_modified_gmt',
+					'year'  => $today['year'],
+					'month' => $today['mon'],
+					'day'   => $today['mday'],
+				),
+			),
+		);
+		$query_today_posts = new WP_Query( $args );
+
+		//adding current writing counts per post
+		$posts=$query_today_posts->get_posts();
+		$count=0;
+		foreach( $posts as $post ){
+			$meta_count=$post->increment;
+			$count=$count+$meta_count['date_inc'==$today];
+		}
+
+		return $count;
+
+	}
+
+
+
+
 }
