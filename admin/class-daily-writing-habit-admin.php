@@ -1,25 +1,13 @@
 <?php
 
 /**
- * The admin-specific functionality of the plugin.
+ * The core behaviuor for the admin part of the plugin
  *
- * @link       http://example.com
  * @since      1.0.0
- *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/admin
+ * @package    Daily_Writing_Habit\admin
  */
 
-/**
- * The admin-specific functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/admin
- * @author     Your Name <email@example.com>
- */
+
 class Daily_Writing_Habit_Admin {
 
 	/**
@@ -51,8 +39,20 @@ class Daily_Writing_Habit_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->load_dependencies();
 
 	}
+
+
+	private function load_dependencies() {
+
+		/**
+		 * The class responsible for adding the new setting in the Discussion page
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-daily-writing-habit-dashboard-widget.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-daily-writing-habit-settings-page.php';
+	}
+
 
 	/**
 	 * Register the stylesheets for the admin area.
@@ -75,5 +75,42 @@ class Daily_Writing_Habit_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
+
+	public function get_today_writing_increment() {
+
+		$today = getdate();
+		$args = array(
+			'date_query' => array(
+				'relation' => 'OR',
+				array(    // returns posts created today
+					'year'  => $today['year'],
+					'month' => $today['mon'],
+					'day'   => $today['mday'],
+				),
+				array(    // returns posts modified today
+
+					'column' => 'post_modified_gmt',
+					'year'  => $today['year'],
+					'month' => $today['mon'],
+					'day'   => $today['mday'],
+				),
+			),
+		);
+		$query_today_posts = new WP_Query( $args );
+
+		//adding current writing counts per post
+		$posts=$query_today_posts->get_posts();
+		$count=0;
+		foreach( $posts as $post ){
+			$meta_count=$post->increment;
+			$count=$count+$meta_count['date_inc'==$today];
+		}
+
+		return $count;
+
+	}
+
+
+
 
 }
