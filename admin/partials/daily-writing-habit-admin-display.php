@@ -1,12 +1,90 @@
 <?php
 
 /**
- * Provide a admin area view for the plugin
+ * Results display view for the plugin
  *
  * @since      1.0.0
  * @package    Daily_Writing_Admin\admin
  * @subpackage Daily_Writing_Admin\admin\partials
  */
-?>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
+
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+function results_page_layout() {
+
+    // Check required user capability
+    if ( !current_user_can( 'manage_options' ) )  {
+        wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'text_domain' ) );
+    }
+
+    $target=get_option('target_number_words');
+    $ndays;
+    $days_datapoints=[];
+    $counts_datapoints=[];
+	$target_datapoints=[];
+
+
+
+    // Admin Page Layout
+    echo '<div class="wrap">' . "\n";
+    echo '	<h1>' . get_admin_page_title() . '</h1>' . "\n";
+    echo 'test page';
+    ?>
+
+        <canvas id="myChart" width="400" height="400"></canvas>
+        <script>
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: [{
+                labels: [<?php echo implode( ', ', $days_datapoints ); ?>], //Example - labels:   ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [{
+                    label: '# of Words',
+                    data: [<?php echo implode( ', ', $counts_datapoints ); ?>], // Exaple - data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                },{
+                    label: 'Writing Target',
+                    data: [<?php echo implode( ', ', $target_datapoints ); ?>], // Exaple - data: [12, 19, 3, 5, 2, 3],
+                    type: 'line'
+                }]
+            ]},
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+        </script>
+
+  <?php
+    echo '</div>' . "\n";
+
+    }
+
+
+?>

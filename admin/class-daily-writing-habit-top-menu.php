@@ -30,6 +30,7 @@ class Daily_Writing_Habit_Top_Menu{
 
 	public function add_top_menu()
 	{
+		//adding the top menu
 		add_menu_page(
 			'DWH',
 			'Writing Habit',
@@ -39,7 +40,21 @@ class Daily_Writing_Habit_Top_Menu{
 			'',
 			null
 		);
+
+		//adding the options page
+		add_submenu_page(
+			'dwh',
+			'Writing goals',
+			'Writing goals configuration',
+			'manage_options',
+			'dwh-options',
+			'settings_page_layout'
+		);
+
 	}
+
+
+
 
 
 }
