@@ -23,11 +23,14 @@ function results_page_layout() {
     }
 
     $target=get_option('target_number_words');
-    $ndays;
-    $days_datapoints=[];
-    $counts_datapoints=[];
+    $ndays=get_option('number_days_show_habit');
 	$target_datapoints=[];
-
+	$days_datapoints=[];
+	for ($i = 1; $i <= $ndays; $i++) {
+		$days_datapoints[]=$i;  // X-axis for the chart
+		$target_datapoints[]=$target; // fixed horizontal line to help visualizing the days we reached the target
+	}
+	$counts_datapoints=get_latests_increments($ndays);
 
 
     // Admin Page Layout
@@ -41,7 +44,7 @@ function results_page_layout() {
         var ctx = document.getElementById("myChart").getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
-            data: [{
+            data: {
                 labels: [<?php echo implode( ', ', $days_datapoints ); ?>], //Example - labels:   ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
                 datasets: [{
                     label: '# of Words',
@@ -68,17 +71,9 @@ function results_page_layout() {
                     data: [<?php echo implode( ', ', $target_datapoints ); ?>], // Exaple - data: [12, 19, 3, 5, 2, 3],
                     type: 'line'
                 }]
-            ]},
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
-                }
-            }
-        });
+            ],
+
+        }});
         </script>
 
   <?php
