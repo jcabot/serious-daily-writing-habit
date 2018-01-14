@@ -39,7 +39,16 @@ intermediate
 .idea
 cache
 
-/vendor/
+vendor/*
+!vendor/bin/
+
+vendor/bin/*
+!vendor/bin/tests/
+
+vendor/bin/tests/*
+!vendor/bin/tests/acceptance/
+
+
 wpcs/
 composer.json
 composer.lock
