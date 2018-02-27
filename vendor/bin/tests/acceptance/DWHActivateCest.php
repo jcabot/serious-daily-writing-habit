@@ -12,12 +12,13 @@ class DWHActivateCest
 
     public function _after(AcceptanceTester $I)
     {
-    	$I->activatePlugin('daily-writing-habit');
-    	$I->seePluginActivated('daily-writing-habit');
+
     }
 
     // tests
     public function tryToTest(AcceptanceTester $I)
     {
+	    $I->activatePlugin('daily-writing-habit');
+	    $I->seePluginActivated('daily-writing-habit');
     }
 }

@@ -46,12 +46,9 @@ class Daily_Writing_Habit_Admin {
 
 	private function load_dependencies() {
 
-		/**
-		 * The class responsible for adding the new setting in the Discussion page
-		 */
-	//	require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-daily-writing-habit-dashboard-widget.php';
-	//	require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-daily-writing-habit-settings-page.php';
-	//	require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/partials/daily-writing-admin-display.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-daily-writing-habit-dashboard-widget.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-daily-writing-habit-settings-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/partials/daily-writing-habit-admin-display.php';
 	}
 
 

@@ -134,10 +134,7 @@ class Daily_Writing_Habit {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-	//	$this->loader->add_action( 'post_updated', $plugin_admin, 'post_updated_count_callback',2, 3); // we want to execute our function before othres can modify the text
-
-
-
+		$this->loader->add_action( 'post_updated', $plugin_admin, 'post_updated_count_callback',2, 3); // we want to execute our function before othres can modify the text
 
 
 	//	$plugin_widget = new Daily_Writing_Habit_Dashboard_Widget( $this->get_plugin_name(), $this->get_version() );
