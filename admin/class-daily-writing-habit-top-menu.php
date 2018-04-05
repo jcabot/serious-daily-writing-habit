@@ -51,6 +51,16 @@ class Daily_Writing_Habit_Top_Menu{
 			'settings_page_layout'
 		);
 
+		//adding the results page
+		add_submenu_page(
+			'dwh',
+			'Goal reports',
+			'How you have been doing so far',
+			'manage_options',
+			'dwh-results',
+			'results_page_layout'
+		);
+
 	}
 
 

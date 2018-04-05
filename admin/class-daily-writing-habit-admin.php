@@ -45,7 +45,7 @@ class Daily_Writing_Habit_Admin {
 
 
 	private function load_dependencies() {
-
+// Do I actually need these dependencies??  <- Those files use functions defined herein
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-daily-writing-habit-dashboard-widget.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-daily-writing-habit-settings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/partials/daily-writing-habit-admin-display.php';
@@ -70,7 +70,7 @@ class Daily_Writing_Habit_Admin {
 	 */
 	public function enqueue_scripts() {
 
-	//	wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chartjs/Chart.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chartjs/Chart.js', array( 'jquery' ), $this->version, false );
 	}
 
 	public function get_today_writing_increment() {

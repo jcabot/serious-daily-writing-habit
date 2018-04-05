@@ -137,21 +137,13 @@ class Daily_Writing_Habit {
 		$this->loader->add_action( 'post_updated', $plugin_admin, 'post_updated_count_callback',2, 3); // we want to execute our function before othres can modify the text
 
 
-	//	$plugin_widget = new Daily_Writing_Habit_Dashboard_Widget( $this->get_plugin_name(), $this->get_version() );
-	//	$this->loader->add_action( 'wp_dashboard_setup', $plugin_widget, 'add_dashboard_widget' );
+		$plugin_widget = new Daily_Writing_Habit_Dashboard_Widget( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'wp_dashboard_setup', $plugin_widget, 'add_dashboard_widget' );
 
 
-	//	$plugin_settings = new Daily_Writing_Habit_Settings_Page( $this->get_plugin_name(), $this->get_version() );
-	//	$this->loader->add_action( 'admin_menu', $plugin_settings, 'add_settings_page' );
-	//	$this->loader->add_action( 'admin_init', $plugin_settings, 'init_settings_page' );
-
-
-
-
-
-
-
-
+		$plugin_settings = new Daily_Writing_Habit_Settings_Page( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'admin_menu', $plugin_settings, 'settings_page_layout' );
+		$this->loader->add_action( 'admin_init', $plugin_settings, 'init_settings_page' );
 
 
 	}

@@ -29,7 +29,7 @@ class Daily_Writing_Habit_Settings_Page{
 
 
 
-	public function init_settings() {
+	public function init_settings_page() {
 
 		register_setting(
 			'settings_habit_group',

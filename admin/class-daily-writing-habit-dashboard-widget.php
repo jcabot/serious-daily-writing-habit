@@ -10,7 +10,6 @@
 class Daily_Writing_Habit_Dashboard_Widget {
 
 	private $plugin_name;
-
 	private $version;
 
 	/**
