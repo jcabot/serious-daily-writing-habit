@@ -142,7 +142,7 @@ class Daily_Writing_Habit {
 
 
 		$plugin_settings = new Daily_Writing_Habit_Settings_Page( $this->get_plugin_name(), $this->get_version() );
-		$this->loader->add_action( 'admin_menu', $plugin_settings, 'settings_page_layout' );
+		$this->loader->add_action( 'admin_menu', $plugin_settings, 'init_plugin_admin_pages' );
 		$this->loader->add_action( 'admin_init', $plugin_settings, 'init_settings_page' );
 
 

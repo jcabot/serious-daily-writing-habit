@@ -27,9 +27,38 @@ class Daily_Writing_Habit_Settings_Page{
 		$this->version = $version;
 	}
 
+	public function init_plugin_admin_pages() {
 
+		//adding the top menu
+		add_menu_page(
+			'Daily Writing Habit',
+			'Daily Writing Habit',
+			'manage_options',
+			'dwh',
+			'',
+			'',
+			null
+		);
 
-	public function init_settings_page() {
+		//adding the options page
+		add_submenu_page(
+			'dwh',
+			'Writing goals',
+			'Writing goals configuration',
+			'manage_options',
+			'dwh-options',
+			'settings_page_layout'
+		);
+
+		//adding the results page
+		add_submenu_page(
+			'dwh',
+			'Goal reports',
+			'How you have been doing so far',
+			'manage_options',
+			'dwh-results',
+			'results_page_layout'
+		);
 
 		register_setting(
 			'settings_habit_group',
@@ -66,6 +95,7 @@ class Daily_Writing_Habit_Settings_Page{
 		);
 
 	}
+
 
 	public function settings_page_layout() {
 
@@ -129,6 +159,8 @@ class Daily_Writing_Habit_Settings_Page{
 		echo '<p class="description">' . __( 'Number of days to visualize when displaying your writing history', 'text_domain' ) . '</p>';
 
 	}
+
+
 
 
 }
