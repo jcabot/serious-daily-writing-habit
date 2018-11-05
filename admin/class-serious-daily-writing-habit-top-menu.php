@@ -7,7 +7,7 @@
  * @subpackage Daily_Writing_Admin\admin\partials
  */
 
-class Daily_Writing_Habit_Top_Menu{
+class Serious_Daily_Writing_Habit_Top_Menu{
 
 
 	private $plugin_name;

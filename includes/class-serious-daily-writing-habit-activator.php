@@ -8,7 +8,7 @@
  */
 
 
-class Daily_Writing_Habit_Activator {
+class Serious_Daily_Writing_Habit_Activator {
 
 	/**
 	 * Short Description. (use period)

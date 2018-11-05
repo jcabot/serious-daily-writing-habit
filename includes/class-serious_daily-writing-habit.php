@@ -9,7 +9,7 @@
  */
 
 
-class Daily_Writing_Habit {
+class Serious_Daily_Writing_Habit {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -49,12 +49,12 @@ class Daily_Writing_Habit {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'DAILY_WRITING_HABIT_VERSION' ) ) {
-			$this->version = DAILY_WRITING_HABIT_VERSION;
+		if ( defined( 'SERIOUS_DAILY_WRITING_HABIT_VERSION' ) ) {
+			$this->version = SERIOUS_DAILY_WRITING_HABIT_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'daily-writing-habit';
+		$this->plugin_name = 'serious-daily-writing-habit';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -85,18 +85,18 @@ class Daily_Writing_Habit {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-daily-writing-habit-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-serious_daily-writing-habit-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-daily-writing-habit-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-serious_daily-writing-habit-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-daily-writing-habit-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-serious_daily-writing-habit-admin.php';
 
 
 		$this->loader = new Daily_Writing_Habit_Loader();

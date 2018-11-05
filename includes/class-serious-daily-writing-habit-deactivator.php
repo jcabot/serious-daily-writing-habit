@@ -8,7 +8,7 @@
  */
 
 
-class Daily_Writing_Habit_Deactivator {
+class Serious_Daily_Writing_Habit_Deactivator {
 
 
 	public static function deactivate() {

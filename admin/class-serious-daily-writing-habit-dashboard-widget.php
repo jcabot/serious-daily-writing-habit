@@ -7,7 +7,7 @@
  * @package    Daily_Writing_Admin\admin
  * @subpackage Daily_Writing_Admin\admin\partials
  */
-class Daily_Writing_Habit_Dashboard_Widget {
+class Serious_Daily_Writing_Habit_Dashboard_Widget {
 
 	private $plugin_name;
 	private $version;
