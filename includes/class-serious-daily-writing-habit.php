@@ -85,21 +85,21 @@ class Serious_Daily_Writing_Habit {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-serious_daily-writing-habit-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-serious-daily-writing-habit-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-serious_daily-writing-habit-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-serious-daily-writing-habit-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-serious_daily-writing-habit-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-serious-daily-writing-habit-admin.php';
 
 
-		$this->loader = new Daily_Writing_Habit_Loader();
+		$this->loader = new Serious_Daily_Writing_Habit_Loader();
 
 	}
 
@@ -114,7 +114,7 @@ class Serious_Daily_Writing_Habit {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Daily_Writing_Habit_i18n();
+		$plugin_i18n = new Serious_Daily_Writing_Habit_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -129,7 +129,7 @@ class Serious_Daily_Writing_Habit {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Daily_Writing_Habit_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Serious_Daily_Writing_Habit_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -137,11 +137,11 @@ class Serious_Daily_Writing_Habit {
 		$this->loader->add_action( 'post_updated', $plugin_admin, 'post_updated_count_callback',2, 3); // we want to execute our function before othres can modify the text
 
 
-		$plugin_widget = new Daily_Writing_Habit_Dashboard_Widget( $this->get_plugin_name(), $this->get_version() );
+		$plugin_widget = new Serious_Daily_Writing_Habit_Dashboard_Widget( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'wp_dashboard_setup', $plugin_widget, 'add_dashboard_widget' );
 
 
-		$plugin_settings = new Daily_Writing_Habit_Settings_Page( $this->get_plugin_name(), $this->get_version() );
+		$plugin_settings = new Serious_Daily_Writing_Habit_Settings_Page( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'admin_menu', $plugin_settings, 'init_plugin_admin_pages' );
 		$this->loader->add_action( 'admin_init', $plugin_settings, 'init_settings_page' );
 

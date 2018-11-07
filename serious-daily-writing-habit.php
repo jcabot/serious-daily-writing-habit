@@ -12,7 +12,7 @@
  * Description:       Helps in developing a writing habit by setting and tracking a daily (or weekly) writing goal
  * Version:           1.0.0
  * Author:            Jordi Cabot
- * Author URI:        http://jordicabot.com/
+ * Author URI:        https://seriouswp.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       daily-writing-habit
@@ -64,7 +64,7 @@ register_deactivation_hook( __FILE__, 'deactivate_serious_daily_writing_habit' )
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-serious_daily-writing-habit.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-serious-daily-writing-habit.php';
 
 /**
  * Begins execution of the plugin.

@@ -11,7 +11,7 @@
  * @package    Daily_Writing_Habit\includes
  */
 
-class Daily_Writing_Habit_i18n {
+class Serious_Daily_Writing_Habit_i18n {
 
 
 	/**
