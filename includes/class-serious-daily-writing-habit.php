@@ -87,17 +87,11 @@ class Serious_Daily_Writing_Habit {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-serious-daily-writing-habit-loader.php';
 
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
+		/**		 * The class responsible for defining internationalization functionality of the plugin.		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-serious-daily-writing-habit-i18n.php';
 
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
+		/**		 * The class responsible for defining all actions that occur in the admin area.		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-serious-daily-writing-habit-admin.php';
-
 
 		$this->loader = new Serious_Daily_Writing_Habit_Loader();
 
@@ -115,7 +109,6 @@ class Serious_Daily_Writing_Habit {
 	private function set_locale() {
 
 		$plugin_i18n = new Serious_Daily_Writing_Habit_i18n();
-
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
@@ -130,21 +123,23 @@ class Serious_Daily_Writing_Habit {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Serious_Daily_Writing_Habit_Admin( $this->get_plugin_name(), $this->get_version() );
-
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+        // Registering also the main plugin menu
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'init_admin_menu' );
 
-		$this->loader->add_action( 'post_updated', $plugin_admin, 'post_updated_count_callback',2, 3); // we want to execute our function before othres can modify the text
+		//Hooking into post_updated to be able to recalculate the writing count
+		$this->loader->add_action( 'post_updated', $plugin_admin, 'post_updated_count_callback',2, 3); // we want to execute our function before others can modify the text
 
 
+		// Hooking into the admin dashboard creation to render our own widget
+		// We don't need to require_once the plugin file since it´s already loaded as part of the load_dependencies of the main plugin_admin class
 		$plugin_widget = new Serious_Daily_Writing_Habit_Dashboard_Widget( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'wp_dashboard_setup', $plugin_widget, 'add_dashboard_widget' );
 
 
 		$plugin_settings = new Serious_Daily_Writing_Habit_Settings_Page( $this->get_plugin_name(), $this->get_version() );
-		$this->loader->add_action( 'admin_menu', $plugin_settings, 'init_plugin_admin_pages' );
 		$this->loader->add_action( 'admin_init', $plugin_settings, 'init_settings_page' );
-
 
 	}
 

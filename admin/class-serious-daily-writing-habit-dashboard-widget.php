@@ -56,5 +56,3 @@ class Serious_Daily_Writing_Habit_Dashboard_Widget {
 	}
 
 }
-
-?>

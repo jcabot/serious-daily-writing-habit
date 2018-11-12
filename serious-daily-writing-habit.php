@@ -77,8 +77,9 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-serious-daily-writing-habi
  */
 function run_serious_daily_writing_habit() {
 
-	$plugin = new Serious_Daily_Writing_Habit();
+	$plugin = new Serious_Daily_Writing_Habit(); //Creating the plugin main object
 	$plugin->run();
 
 }
-run_serious_daily_writing_habit();
+
+run_serious_daily_writing_habit(); //start of the plugin execution

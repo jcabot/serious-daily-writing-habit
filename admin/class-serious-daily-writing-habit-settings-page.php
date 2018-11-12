@@ -27,38 +27,7 @@ class Serious_Daily_Writing_Habit_Settings_Page{
 		$this->version = $version;
 	}
 
-	public function init_plugin_admin_pages() {
-
-		//adding the top menu
-		add_menu_page(
-			'Daily Writing Habit',
-			'Daily Writing Habit',
-			'manage_options',
-			'dwh',
-			'',
-			'',
-			null
-		);
-
-		//adding the options page
-		add_submenu_page(
-			'dwh',
-			'Writing goals',
-			'Writing goals configuration',
-			'manage_options',
-			'dwh-options',
-			'settings_page_layout'
-		);
-
-		//adding the results page
-		add_submenu_page(
-			'dwh',
-			'Goal reports',
-			'How you have been doing so far',
-			'manage_options',
-			'dwh-results',
-			'results_page_layout'
-		);
+	public function init_settings_page() {
 
 		register_setting(
 			'settings_habit_group',
@@ -69,28 +38,28 @@ class Serious_Daily_Writing_Habit_Settings_Page{
 			'habit_target_options_section',
 			'',
 			false,
-			'habit_target_options'
+			'dwh-options'
 		);
 
 		add_settings_field(
 			'target_number_words',
-			__( 'target_number_words_label', 'text_domain' ),
-			array( $this, 'render_target_number_words_field' ),
-			'habit_target_options',
+			'target_number_words_label',
+			 'render_target_number_words_field',
+			'dwh-options',
 			'habit_target_options_section'
 		);
 		add_settings_field(
 			'exclude_counting_pages',
-			__( 'exclude_counting_pages_label', 'text_domain' ),
-			array( $this, 'render_exclude_counting_pages_field' ),
-			'habit_target_options',
+			'exclude_counting_pages_label',
+			'render_exclude_counting_pages_field',
+			'dwh-options',
 			'habit_target_options_section'
 		);
 		add_settings_field(
 			'number_days_show_habit',
 			__( 'number_days_show_habit_label', 'text_domain' ),
 			array( $this, 'render_number_days_show_habit_field' ),
-			'habit_target_options',
+			'dwh-options',
 			'habit_target_options_section'
 		);
 

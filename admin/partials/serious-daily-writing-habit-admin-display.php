@@ -16,12 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function results_page_layout() {
-
-    // Check required user capability
-    if ( !current_user_can( 'manage_options' ) )  {
-        wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'text_domain' ) );
-    }
-
+	echo '<div class="wrap">' . "\n";
+	echo '	<h1>' . get_admin_page_title() . '</h1>' . "\n";
+	echo 'test page';
+}
+    /*
     $target=get_option('target_number_words');
     $ndays=get_option('number_days_show_habit');
 	$target_datapoints=[];
@@ -81,5 +80,5 @@ function results_page_layout() {
 
     }
 
-
 ?>
+    */

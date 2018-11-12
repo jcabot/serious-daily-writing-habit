@@ -45,7 +45,6 @@ class Serious_Daily_Writing_Habit_Admin {
 
 
 	private function load_dependencies() {
-// Do I actually need these dependencies??  <- Those files use functions defined herein
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-serious-daily-writing-habit-dashboard-widget.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-serious-daily-writing-habit-settings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/partials/serious-daily-writing-habit-admin-display.php';
@@ -58,20 +57,53 @@ class Serious_Daily_Writing_Habit_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/serious-daily-writing-habit-admin.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
 	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    1.0.0
+	 *	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chartjs/Chart.js', array( 'jquery' ), $this->version, false );
 	}
+
+	public function init_admin_menu() {
+		//adding the top menu
+		add_menu_page(
+			'dwh',
+			'Writing Habit',
+			'manage_options',
+			'dwh',
+			'results_page_layout',  //top menu option links also to the results page directly
+			'dashicons-edit',
+			null
+		);
+
+		//adding the results page
+		add_submenu_page(
+			'dwh',
+			'Goal reports',
+			'How you have been doing so far',
+			'manage_options',
+			'dwh',
+			'results_page_layout'
+		);
+
+		//adding the options page
+		add_submenu_page(
+			'dwh',
+			'Writing goals',
+			'Writing goals configuration',
+			'manage_options',
+			'dwh-options',
+			'settings_page_layout'
+		);
+
+
+	}
+
+
 
 	public function get_today_writing_increment() {
 
