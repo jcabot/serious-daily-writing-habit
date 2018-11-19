@@ -19,14 +19,8 @@ class Serious_Daily_Writing_Habit_Admin {
 	 */
 	private $plugin_name;
 
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
 	private $version;
+
 
 	/**
 	 * Initialize the class and set its properties.
@@ -40,13 +34,12 @@ class Serious_Daily_Writing_Habit_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->load_dependencies();
-
 	}
 
 
 	private function load_dependencies() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-serious-daily-writing-habit-dashboard-widget.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-serious-daily-writing-habit-settings-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/partials/class-serious-daily-writing-habit-dashboard-widget.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/partials/class-serious-daily-writing-habit-settings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/partials/serious-daily-writing-habit-admin-display.php';
 	}
 
@@ -83,8 +76,8 @@ class Serious_Daily_Writing_Habit_Admin {
 		//adding the results page
 		add_submenu_page(
 			'dwh',
-			'Goal reports',
-			'How you have been doing so far',
+			'Daily Writing Habit reports',
+			'Accomplishments',
 			'manage_options',
 			'dwh',
 			'results_page_layout'
@@ -93,11 +86,11 @@ class Serious_Daily_Writing_Habit_Admin {
 		//adding the options page
 		add_submenu_page(
 			'dwh',
+			'Daily Writing goals - Configuration',
 			'Writing goals',
-			'Writing goals configuration',
 			'manage_options',
 			'dwh-options',
-			'settings_page_layout'
+			array(new Serious_Daily_Writing_Habit_Settings_Page, 'settings_page_layout')
 		);
 
 
