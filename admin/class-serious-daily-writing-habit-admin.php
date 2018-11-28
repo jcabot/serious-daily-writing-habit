@@ -97,42 +97,6 @@ class Serious_Daily_Writing_Habit_Admin {
 	}
 
 
-
-	public function get_today_writing_increment() {
-
-		$today = getdate();
-		$args = array(
-			'date_query' => array(
-				'relation' => 'OR',
-				array(    // returns posts created today
-					'year'  => $today['year'],
-					'month' => $today['mon'],
-					'day'   => $today['mday'],
-				),
-				array(    // returns posts modified today
-
-					'column' => 'post_modified',
-					'year'  => $today['year'],
-					'month' => $today['mon'],
-					'day'   => $today['mday'],
-				),
-			),
-		);
-		$query_today_posts = new WP_Query( $args );
-
-		//adding current writing counts per post
-		$posts=$query_today_posts->get_posts();
-		$count=0;
-		foreach( $posts as $post ){
-			$meta_counts=$post->increment;  //getting the increment metadata rows associated to the post
-			$inc=array_search(date( "Ymd" ), $meta_counts);
-			$count = $count + $inc;
-		}
-
-		return $count;
-
-	}
-
 	public function get_latests_writing_increment($ndays) {
 		$today=date("Ymd");
 		$afterdate=$today-$ndays-1;
@@ -157,9 +121,9 @@ class Serious_Daily_Writing_Habit_Admin {
 
 		$new_length=strlen($post_after->post_content);
 		$today=date("Ymd");
-		if ( !isset($post_before) ) //it's a new post, the whole lenght of the body is the increment
+		if ( !isset($post_before) ) //it's a new post, the whole length of the body is the increment
 		{
-			add_post_meta($post_id,'increment',array($today => $new_length),false);
+			add_post_meta($post_id,'increment',array(date => $today, inc => $new_length),false);
 		}
 		else
 		{
@@ -167,13 +131,13 @@ class Serious_Daily_Writing_Habit_Admin {
 			$diff=$new_length-$old_length; if ( $diff<0 ) $diff=0; //we don't penalize edits that result in a smaller post. They don't help towards your daily work but won't punish you either
 
 			//we check if there is already metadata to be updated or we need to create a new entry for today's increment
-			$meta_counts=$post_before->increment;
-			$inc=array_search(date( "Ymd" ), $meta_counts);
-			if (isset($inc))
+			$meta_counts=$post_before->increment;  //meta_counts is a bidimensional array of pairs <date,inc>
+			$entry_exists=array_search(date( "Ymd" ), array_column($meta_counts, 'date'));
+			if ($entry_exists)  //we have found an entry for the same post for today
 			{
-				delete_post_meta($post_id,'íncrement',array($today => $inc));
+				delete_post_meta($post_id,'increment',$meta_counts[$entry_exists]); // we delete it to replace it with the new one
 			}
-			add_post_meta($post_id,'increment',array($today => $diff));
+			add_post_meta($post_id,'increment',array(date => $today, inc => $diff));
 		}
 	}
 

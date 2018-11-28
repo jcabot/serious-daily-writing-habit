@@ -28,21 +28,24 @@ class Serious_Daily_Writing_Habit_Dashboard_Widget {
 
 	public function add_dashboard_widget() {
 
-		wp_add_dashboard_widget('dhdw','Writing Daily Habit Stats', 'render_dashboard_widget' );
-
+		wp_add_dashboard_widget('dhdw','Writing Daily Habit Stats', array($this,'render_dashboard_widget') );
 	}
 
 	public function render_dashboard_widget() {
 
-		$inc=get_today_writing_increment();
-		$target=get_option('target_number_words');
+		$inc=$this->get_today_writing_increment();
+
+		$options = get_option( 'dwh_options' );
+		$target= $options['target_number_words'];
+
+		$html_vars = "target is " . $target ." inc is " . $inc;
 
 		if (isset($target)) {
 
 			if ( $inc == 0 ) {
-				$html = 'Time is running! Get to work and start writing!';
+				$html = 'Daily goal not yet accomplished. Time is running! Get to work and start writing';
 			} elseif ( $inc >= $target ) {
-				$html = 'Well done! You are good to go. Rest a bit and come back tomorrow for more writing';
+				$html = 'Well done! You are good to go. Rest a bit and make sure you come back tomorrow for more writing';
 			} else{
 				$html = 'You are getting there! Keep pushing your writing. Still time to reach your goal. Do NOT disappoint yourself';
 			}
@@ -51,8 +54,47 @@ class Serious_Daily_Writing_Habit_Dashboard_Widget {
 			$html='Go to the Daily Writing Habit Plugin settings page to set your writing target goals';
 		}
 
-		echo $html;
+		echo $html_vars + $html;
+	}
+
+
+	public function get_today_writing_increment() {
+
+		$today = getdate();
+		$args = array(
+			'date_query' => array(
+				'relation' => 'OR',
+				array(    // returns posts created today
+					'column' => 'post_date',
+					'year'  => $today['year'],
+					'month' => $today['mon'],
+					'day'   => $today['mday'],
+				),
+				array(    // returns posts modified today
+
+					'column' => 'post_modified',
+					'year'  => $today['year'],
+					'month' => $today['mon'],
+					'day'   => $today['mday'],
+				),
+			),
+		);
+		$query_today_posts = new WP_Query( $args );
+
+		//sum up current writing counts per post
+		$posts=$query_today_posts->get_posts();
+		$count=0;
+		foreach( $posts as $post ){
+			$meta_counts=$post->increment;  //getting the increment metadata rows associated to the post
+		//	$inc=array_search(date( "Ymd" ), $meta_counts);
+			//$count = $count + $inc;
+
+			$count = $count + $meta_counts;
+		}
+
+		return $count;
 
 	}
+
 
 }
