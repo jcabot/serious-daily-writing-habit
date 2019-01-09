@@ -1674,7 +1674,7 @@ var Chart = require(29)();
 
 Chart.helpers = require(45);
 
-// @todo dispatch these helpers into appropriated helpers/helpers.* file and write unit tests!
+// @todo dispatch these helpers into appropriated helpers/helpers.* file and write unit old_tests!
 require(27)(Chart);
 
 Chart.defaults = require(25);

@@ -4,7 +4,7 @@
  * The core behaviuor for the admin part of the plugin
  *
  * @since      1.0.0
- * @package    Daily_Writing_Habit\admin
+ * @package    Serious_Daily_Writing_Habit\admin
  */
 
 

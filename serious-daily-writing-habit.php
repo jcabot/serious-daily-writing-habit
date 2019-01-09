@@ -4,10 +4,10 @@
  *
  * @link              https://github.com/jcabot/writing-habit-wp-plugin
  * @since             1.0.0
- * @package           Daily_Writing_Habit
+ * @package           Serious_Daily_Writing_Habit
  *
  * @wordpress-plugin
- * Plugin Name:       Daily Writing Habit
+ * Plugin Name:       Serious Daily Writing Habit
  * Plugin URI:        https://github.com/jcabot/writing-habit-wp-plugin
  * Description:       Helps in developing a writing habit by setting and tracking a daily (or weekly) writing goal
  * Version:           1.0.0
@@ -15,7 +15,7 @@
  * Author URI:        https://seriouswp.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       daily-writing-habit
+ * Text Domain:       serious-daily-writing-habit
  * Domain Path:       /languages
  *
  * This plugin is distributed under the terms of the GNU General Public License as published by
