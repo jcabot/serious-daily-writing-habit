@@ -98,10 +98,25 @@ class Serious_Daily_Writing_Habit_Admin {
 
 
 
-	public function get_today_writing_increment() {
+	public static function get_today_writing_increment() {
 
 		$today = getdate();
+
+		/*$args = array(
+			'post_type' => 'post',
+			'post_status' => 'any', // we also want the drafts
+			'nopaging'=>true,
+			'date_query' => array(
+				'year'  => $today['year'],
+				'month' => $today['mon'],
+				'day'   => $today['mday'],
+			)
+		);*/
+
 		$args = array(
+			'post_type' => 'post',
+			'post_status' => 'any', // we also want the drafts
+			'nopaging'=>true,
 			'date_query' => array(
 				'relation' => 'OR',
 				array(    // returns posts created today
@@ -110,27 +125,36 @@ class Serious_Daily_Writing_Habit_Admin {
 					'day'   => $today['mday'],
 				),
 				array(    // returns posts modified today
-
 					'column' => 'post_modified',
 					'year'  => $today['year'],
 					'month' => $today['mon'],
 					'day'   => $today['mday'],
 				),
-			),
+			)
 		);
+
 		$query_today_posts = new WP_Query( $args );
 
 		//adding current writing counts per post
 		$posts=$query_today_posts->get_posts();
 		$count=0;
 		foreach( $posts as $post ){
-			$meta_counts=$post->increment;  //getting the increment metadata rows associated to the post
-			$inc=array_search(date( "Ymd" ), $meta_counts);
-			$count = $count + $inc;
+			$today_post_inc=0;
+			$meta_incs= get_post_meta($post->ID, 'increment',false);
+			if ( !empty( $meta_incs ) ) {
+				foreach ( $meta_incs as $inc ) //the number of increments associated to a post will be typically rather small
+				{
+					if ( $inc['d'] == date( "Ymd" ) ) {
+						$today_post_inc = $inc['v'];
+					}
+				}
+				$count = $count + $today_post_inc;
+			}
 		}
 
-		return $count;
 
+
+		return $count;
 	}
 
 	public function get_latests_writing_increment($ndays) {
@@ -153,27 +177,43 @@ class Serious_Daily_Writing_Habit_Admin {
 
 	}
 
+
+	//Action called every time a modification of the post is stored in the database (after save, update,...)
 	public function post_updated_count_callback( $post_id, $post_after, $post_before) {
 
-		$new_length=strlen($post_after->post_content);
+		$new_word_length=str_word_count($post_after->post_content);
 		$today=date("Ymd");
-		if ( !isset($post_before) ) //it's a new post, the whole lenght of the body is the increment
+		if ( !isset($post_before) ) //it's a new post, the whole length of the body is the increment
 		{
-			add_post_meta($post_id,'increment',array($today => $new_length),false);
+			add_post_meta($post_id,'increment', [ 'd' => $today, 'v' => $new_word_length ],false);
 		}
 		else
 		{
-			$old_length=strlen($post_before->post_content);
-			$diff=$new_length-$old_length; if ( $diff<0 ) $diff=0; //we don't penalize edits that result in a smaller post. They don't help towards your daily work but won't punish you either
-
-			//we check if there is already metadata to be updated or we need to create a new entry for today's increment
-			$meta_counts=$post_before->increment;
-			$inc=array_search(date( "Ymd" ), $meta_counts);
-			if (isset($inc))
-			{
-				delete_post_meta($post_id,'íncrement',array($today => $inc));
+			$old_word_length=str_word_count($post_before->post_content);
+			$diff=$new_word_length-$old_word_length;
+			if($diff<0) $diff=0; //we don't penalize removing words
+			if ($diff!=0) { //if something has changed
+				//we check if there is already metadata to be updated or we need to create a new entry for today's increment
+				$meta_incs= get_post_meta($post_before->ID, 'increment',false);
+				if ( !empty( $meta_incs ) ) {
+					$previous_today_inc=0;
+					foreach ($meta_incs as $inc) //the number of increments associated to a post will be typically rather small
+					{
+						if ($inc['d']==date( "Ymd" ))
+						{
+							$previous_today_inc = $inc['v'];
+						}
+					}
+				}
+				if ( $previous_today_inc!=0 ) //if not, this will be the first time we modify the post today
+				{
+					delete_post_meta( $post_id, 'increment', array( "d"  => $today,"v" => $previous_today_inc ));
+					add_post_meta( $post_id, 'increment', array( "d"  => $today,"v" => $diff + $previous_today_inc));
+				} else //the diff is the complete addition to the post we have done so far today
+				{
+					add_post_meta( $post_id, 'increment', array( "d" => $today, "v" => $diff ) );
+				}
 			}
-			add_post_meta($post_id,'increment',array($today => $diff));
 		}
 	}
 
