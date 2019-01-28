@@ -28,9 +28,7 @@ class Serious_Daily_Writing_Habit_Dashboard_Widget {
 
 
 	public function add_dashboard_widget() {
-
 		wp_add_dashboard_widget('dhdw','Writing Daily Habit: How are you doing today?', array($this,'render_dashboard_widget'));
-
 	}
 
 	public function render_dashboard_widget() {

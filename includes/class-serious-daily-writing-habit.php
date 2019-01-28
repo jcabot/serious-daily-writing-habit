@@ -130,6 +130,8 @@ class Serious_Daily_Writing_Habit {
 
 		//Hooking into post_updated to be able to recalculate the writing count
 		$this->loader->add_action( 'post_updated', $plugin_admin, 'post_updated_count_callback',2, 3); // we want to execute our function before others can modify the text
+		//Hooking into post_updated to be able to recalculate the writing count
+		$this->loader->add_action( 'wp_insert_post', $plugin_admin, 'post_inserted_count_callback',2, 3); // we want to execute our function before others can modify the text
 
 
 		// Hooking into the admin dashboard creation to render our own widget

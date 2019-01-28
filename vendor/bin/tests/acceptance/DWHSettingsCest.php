@@ -1,11 +1,14 @@
-<?php 
+<?php
+
 
 class DWHSettingsCest
 {
     public function _before(AcceptanceTester $I)
     {
 	    $I->loginAsAdmin();
-	    $I->amOnAdminPage('/');
+	    $I->amOnPluginsPage();
+	    $I->seePluginInstalled('serious-daily-writing-habit');
+	    $I->activatePlugin('serious-daily-writing-habit');
     }
 
     // tests
