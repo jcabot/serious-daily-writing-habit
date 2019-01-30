@@ -14,5 +14,9 @@ class DWHReportCest
     // tests
     public function reportPageLoads(AcceptanceTester $I)
     {
+	    $I->amOnAdminPage('admin.php?page=dwh');
+    	$I->see("Daily Writing Habit reports"); //the HTML side loads
+	    $I->seeInSource("# of Written Words"); // this text is inside a script tag
+    	//$I->see("# of Written Words");                            // the JavaScript side loads
     }
 }

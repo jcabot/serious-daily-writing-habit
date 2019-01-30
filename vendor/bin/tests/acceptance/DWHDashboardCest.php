@@ -47,7 +47,7 @@ class DWHDashboardCest
 		);
 		wp_insert_post( $my_post ); */
 
-        $I->factory()->post->create( array( 'post_title' => 'Test Post tbree', 'post_content' => 'a four words post', 'post_author'=>'1', 'post_status'=>'draft' ));
+        $I->factory()->post->create( array( 'post_title' => 'Test Post dashboard', 'post_content' => 'a first 4words post ', 'post_author'=>'1', 'post_status'=>'draft' ));
 	//		$p = factory->post->create( array( 'post_title' => 'Test Post tbree' ) );
 		// 3 < 20 - I should see on the dashboard the message saying to keep going
 		$I->amOnAdminPage('/');
@@ -56,7 +56,7 @@ class DWHDashboardCest
 
 	//I add a second post
 
-		$I->factory()->post->create( array( 'post_title' => 'Test Post four', 'post_content' => 'another four words post', 'post_author'=>'1','post_status'=>'draft' ));
+		$I->factory()->post->create( array( 'post_title' => 'Test Post dashboard2', 'post_content' => '<!-- wp:paragraph --> <p> another four word post </p> <!-- /wp:paragraph -->','post_author'=>'1','post_status'=>'draft' ));
 
 		//3+6>8 - I should see a good to go message
 		$I->amOnAdminPage('/');

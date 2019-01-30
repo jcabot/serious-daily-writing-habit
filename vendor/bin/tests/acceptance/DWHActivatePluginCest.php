@@ -20,7 +20,6 @@ class DWHActivatePluginCest {
 
 	public function environmentTest(AcceptanceTester $I)
 	{
-
 		$I->loginAsAdmin();
 		$I->amOnAdminPage('/');
 		$I->see('Dashboard');
@@ -37,7 +36,6 @@ class DWHActivatePluginCest {
 
 	public function deactivateTest(AcceptanceTester $I)
 	{
-
 		$I->loginAsAdmin();
 		$I->amOnPluginsPage();
 		$I->seePluginInstalled('serious-daily-writing-habit');

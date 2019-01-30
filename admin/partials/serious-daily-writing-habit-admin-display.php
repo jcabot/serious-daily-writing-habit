@@ -36,7 +36,6 @@ function results_page_layout() {
 
 	echo '<div class="wrap">' . "\n";
 	echo '	<h1>' . get_admin_page_title() . '</h1>' . "\n";
-	echo 'test page';
 	?>
 
 	<canvas id="myChart" width="400" height="400"></canvas>

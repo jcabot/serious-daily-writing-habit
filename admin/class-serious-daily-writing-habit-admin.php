@@ -173,7 +173,7 @@ class Serious_Daily_Writing_Habit_Admin {
 	//Action called every time a modification of the post is stored in the database (after save, update,...)
 	public function post_updated_count_callback( $post_id, $post_after, $post_before) {
 
-		$new_word_length=str_word_count($post_after->post_content);
+		$new_word_length=str_word_count(wp_strip_all_tags($post_after->post_content));
 		$today=date("Ymd");
 		if ( !isset($post_before) ) //it's a new post, the whole length of the body is the increment
 		{
@@ -181,7 +181,7 @@ class Serious_Daily_Writing_Habit_Admin {
 		}
 		else
 		{
-			$old_word_length=str_word_count($post_before->post_content);
+			$old_word_length=str_word_count(wp_strip_all_tags($post_before->post_content));
 			$diff=$new_word_length-$old_word_length;
 			if($diff<0) $diff=0; //we don't penalize removing words
 			if ($diff!=0) { //if something has changed
