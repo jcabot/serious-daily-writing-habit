@@ -17,8 +17,8 @@ class Serious_Daily_Writing_Habit_Dashboard_Widget {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string    $plugin_name       Name of this plugin.
+	 * @param      string    $version    Version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
