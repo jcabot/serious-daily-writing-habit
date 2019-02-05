@@ -59,7 +59,7 @@ class Serious_Daily_Writing_Habit_Admin {
 	 *	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		//wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chartjs/Chart.js', array( 'jquery' ), $this->version, false );
+		//adding the min version of the library wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chartjs/Chart.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chartjs/Chart.min.js', array( 'jquery' ), $this->version, false );
 	}
 
@@ -115,7 +115,7 @@ class Serious_Daily_Writing_Habit_Admin {
 		return Serious_Daily_Writing_Habit_Admin::get_writing_increment( new DateTime('today'));
 	}
 
-
+	//Word count for the given day
 	public static function get_writing_increment($writing_day) {
 
 		$writing_day_parsed=date_parse($writing_day->format("Ymd"));

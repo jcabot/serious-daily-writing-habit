@@ -4,8 +4,8 @@
  * Provide a widget admin dashboard area view for the plugin
  *
  * @since      1.0.0
- * @package    Daily_Writing_Admin\admin
- * @subpackage Daily_Writing_Admin\admin\partials
+ * @package    Serious_Daily_Writing_Habit\admin
+ * @subpackage Serious_Daily_Writing_Habit\admin\partials
  */
 
 class Serious_Daily_Writing_Habit_Dashboard_Widget {

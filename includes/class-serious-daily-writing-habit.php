@@ -5,7 +5,7 @@
  * The file that defines the core plugin class
  *
  * @since      1.0.0
- * @package    Daily_Writing_Habit\includes
+ * @package    Serious_Daily_Writing_Habit\includes
  */
 
 
