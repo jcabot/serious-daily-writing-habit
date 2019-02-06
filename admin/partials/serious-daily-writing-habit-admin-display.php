@@ -46,7 +46,7 @@ function results_page_layout() {
             data: {
                 labels: [<?php echo implode( ', ', $days_datapoints ); ?>],
                 datasets: [{
-                    label: '# of Written Words in the last days',
+                    label: '# of Written Words',
                     data: [<?php echo implode( ', ', $counts_datapoints ); ?>],
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
