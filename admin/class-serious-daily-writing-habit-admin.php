@@ -4,7 +4,7 @@
  * The core behaviuor for the admin part of the plugin
  *
  * @since      1.0.0
- * @package    Daily_Writing_Habit\admin
+ * @package    Serious_Daily_Writing_Habit\admin
  */
 
 
@@ -50,7 +50,8 @@ class Serious_Daily_Writing_Habit_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/serious-daily-writing-habit-admin.css', array(), $this->version, 'all' );
+		// We don't add any CSS-specific styles as part of the plugin
+	//	wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/serious-daily-writing-habit-admin.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -58,7 +59,8 @@ class Serious_Daily_Writing_Habit_Admin {
 	 *	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chartjs/Chart.js', array( 'jquery' ), $this->version, false );
+		//adding the min version of the library wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chartjs/Chart.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/chartjs/Chart.min.js', array( 'jquery' ), $this->version, false );
 	}
 
 	public function init_admin_menu() {
@@ -77,7 +79,7 @@ class Serious_Daily_Writing_Habit_Admin {
 		add_submenu_page(
 			'dwh',
 			'Daily Writing Habit reports',
-			'Accomplishments',
+			'Report',
 			'manage_options',
 			'dwh',
 			'results_page_layout'
@@ -92,52 +94,122 @@ class Serious_Daily_Writing_Habit_Admin {
 			'dwh-options',
 			array(new Serious_Daily_Writing_Habit_Settings_Page, 'settings_page_layout')
 		);
-
-
 	}
 
 
-	public function get_latests_writing_increment($ndays) {
-		$today=date("Ymd");
-		$afterdate=$today-$ndays-1;
-
-		global $wpdb;
-		$results = $wpdb->get_results( "SELECT p.post_modified, pm.meta_value FROM {$wpdb->prefix}postmeta pm,{$wpdb->prefix}posts p  WHERE pm.meta_key ='increment' AND 
-					p.ID=pm.post_id and p.post_modified  AFTER {$afterdate}", OBJECT );
-
-		$word_counts = array();
-		foreach( $results as $result ){
-			$day=$result->meta_value['date_inc'];
-			$day_position=date_diff($today, $day);
-			if( $day_position>=0)  //we avoid counting word increments before the range we are considering
-				$word_counts[$day_position]=$word_counts[$day_position]+$result->meta_value['value_inc'];
+	public static function get_latests_increments($ndays) {
+		$count=[];
+		for ($i = 0; $i < $ndays; $i++) {
+			$today = new DateTime('today');
+			$day_to_count=$ndays-$i-1;
+			$today->modify("-$day_to_count day"); // we move today a few days back
+			$count[$i]=Serious_Daily_Writing_Habit_Admin::get_writing_increment($today);
 		}
-
-		return $word_counts;
-
+		return $count;
 	}
 
+
+	public static function get_today_writing_increment() {
+		return Serious_Daily_Writing_Habit_Admin::get_writing_increment( new DateTime('today'));
+	}
+
+	//Word count for the given day
+	public static function get_writing_increment($writing_day) {
+
+		$writing_day_parsed=date_parse($writing_day->format("Ymd"));
+
+		$args = array(
+			'post_type' => 'post',
+			'post_status' => 'any', // we also want the drafts
+			'nopaging'=>true,
+			'date_query' => array(
+				'inclusive' =>true,
+				'relation' => 'OR',
+				'after' => array(    // returns posts created on the $writing_day
+					'year'  => $writing_day_parsed['year'],
+					'month' => $writing_day_parsed['month'],
+					'day'   => $writing_day_parsed['day'],
+					)
+				,
+				'after' => 	array(    // returns posts modified on the $writing_day
+					'column' => 'post_modified',
+					'year'  => $writing_day_parsed['year'],
+					'month' => $writing_day_parsed['month'],
+					'day'   => $writing_day_parsed['day'],
+					)
+			)
+		);
+
+		$query_day_posts = new WP_Query( $args );  //We try to narrow down the posts for which an increment may exist
+
+		//adding current writing counts per post
+		$posts=$query_day_posts->get_posts();
+		$count=0;
+		foreach( $posts as $post ){
+			$day_post_inc=0;
+			$meta_incs= get_post_meta($post->ID, 'increment',false);
+			if ( !empty( $meta_incs ) ) {
+				foreach ( $meta_incs as $inc ) //the number of increments associated to a post will be typically rather small
+				{
+					if ( $inc['d'] == $writing_day->format("Ymd")) {
+						$day_post_inc = $inc['v'];
+					}
+				}
+				$count = $count + $day_post_inc;
+			}
+		}
+		return $count;
+	}
+
+	//Action called every time a modification of the post is stored in the database (after save, update,...)
+	public function post_inserted_count_callback( $post_id, $post_after, $update)
+	{
+		if (!$update && $post_after->post_status=='draft') { // the post is not an updated version of an old post BUT it could still be a new draft of an unpublished post
+
+			$this->post_updated_count_callback($post_id, $post_after,NULL);
+		}
+	}
+
+	//Action called every time a modification of the post is stored in the database (after save, update,...)
 	public function post_updated_count_callback( $post_id, $post_after, $post_before) {
 
-		$new_length=strlen($post_after->post_content);
-		$today=date("Ymd");
-		if ( !isset($post_before) ) //it's a new post, the whole length of the body is the increment
-		{
-			add_post_meta($post_id,'increment',array(date => $today, inc => $new_length),false);
-		}
-		else
-		{
-			$old_length=strlen($post_before->post_content);
-			$diff=$new_length-$old_length; if ( $diff<0 ) $diff=0; //we don't penalize edits that result in a smaller post. They don't help towards your daily work but won't punish you either
-
-			//we check if there is already metadata to be updated or we need to create a new entry for today's increment
-			$meta_counts=$post_before->increment;  //meta_counts is a bidimensional array of pairs <date,inc>
-			$entry_exists=array_search(date( "Ymd" ), array_column($meta_counts, 'date'));
-			if ($entry_exists)  //we have found an entry for the same post for today
+		if($post_after->post_type=='post') {
+			$new_word_length = str_word_count( wp_strip_all_tags( $post_after->post_content ) );
+			$today = date( "Ymd" );
+			if ( ! isset( $post_before ) ) //it's a new post, the whole length of the body is the increment
 			{
-				delete_post_meta($post_id,'increment',$meta_counts[$entry_exists]); // we delete it to replace it with the new one
+				add_post_meta( $post_id, 'increment', [ 'd' => $today, 'v' => $new_word_length ], false );
+			} else {
+				$old_word_length = str_word_count( wp_strip_all_tags( $post_before->post_content ) );
+				$diff            = $new_word_length - $old_word_length;
+				if ( $diff < 0 ) {
+					$diff = 0;
+				} //we don't penalize removing words
+				if ( $diff != 0 ) { //if something has changed
+					//we check if there is already metadata to be updated or we need to create a new entry for today's increment
+					$meta_incs = get_post_meta( $post_before->ID, 'increment', false );
+					if ( ! empty( $meta_incs ) ) {
+						$previous_today_inc = 0;
+						foreach ( $meta_incs as $inc ) //the number of increments associated to a post will be typically rather small
+						{
+							if ( $inc['d'] == date( "Ymd" ) ) {
+								$previous_today_inc = $inc['v'];
+							}
+						}
+					}
+					if ( $previous_today_inc != 0 ) //if not, this will be the first time we modify the post today
+					{
+						delete_post_meta( $post_id, 'increment', array( "d" => $today, "v" => $previous_today_inc ) );
+						add_post_meta( $post_id, 'increment', array(
+							"d" => $today,
+							"v" => $diff + $previous_today_inc
+						) );
+					} else //the diff is the complete addition to the post we have done so far today
+					{
+						add_post_meta( $post_id, 'increment', array( "d" => $today, "v" => $diff ) );
+					}
+				}
 			}
-			add_post_meta($post_id,'increment',array(date => $today, inc => $diff));
 		}
 	}
 

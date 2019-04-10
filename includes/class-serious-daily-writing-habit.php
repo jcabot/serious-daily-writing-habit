@@ -5,7 +5,7 @@
  * The file that defines the core plugin class
  *
  * @since      1.0.0
- * @package    Daily_Writing_Habit\includes
+ * @package    Serious_Daily_Writing_Habit\includes
  */
 
 
@@ -130,19 +130,18 @@ class Serious_Daily_Writing_Habit {
 
 		//Hooking into post_updated to be able to recalculate the writing count
 		$this->loader->add_action( 'post_updated', $plugin_admin, 'post_updated_count_callback',2, 3); // we want to execute our function before others can modify the text
-
+		//Hooking into post_updated to be able to recalculate the writing count
+		$this->loader->add_action( 'wp_insert_post', $plugin_admin, 'post_inserted_count_callback',2, 3); // we want to execute our function before others can modify the text
 
 		// Hooking into the admin dashboard creation to render our own widget
 		// We don't need to require_once the plugin file since it´s already loaded as part of the load_dependencies of the main plugin_admin class
 		$plugin_widget = new Serious_Daily_Writing_Habit_Dashboard_Widget( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'wp_dashboard_setup', $plugin_widget, 'add_dashboard_widget' );
 
-
 		$plugin_settings = new Serious_Daily_Writing_Habit_Settings_Page( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'admin_init', $plugin_settings, 'init_settings_page' );
 
 	}
-
 
 
 	/**

@@ -8,7 +8,7 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Daily_Writing_Habit\includes
+ * @package    Serious_Daily_Writing_Habit\includes
  */
 
 class Serious_Daily_Writing_Habit_i18n {

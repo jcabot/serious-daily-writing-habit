@@ -1,21 +1,17 @@
 <?php
 
+
 /**
- *
- * @link              https://github.com/jcabot/writing-habit-wp-plugin
- * @since             1.0.0
- * @package           Daily_Writing_Habit
- *
  * @wordpress-plugin
- * Plugin Name:       Daily Writing Habit
- * Plugin URI:        https://github.com/jcabot/writing-habit-wp-plugin
- * Description:       Helps in developing a writing habit by setting and tracking a daily (or weekly) writing goal
+ * Plugin Name:       Serious Daily Writing Habit
+ * Plugin URI:        https://seriouswp.com
+ * Description:       Helps in developing a writing habit by setting and tracking a daily writing goal
  * Version:           1.0.0
  * Author:            Jordi Cabot
  * Author URI:        https://seriouswp.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       daily-writing-habit
+ * Text Domain:       serious-daily-writing-habit
  * Domain Path:       /languages
  *
  * This plugin is distributed under the terms of the GNU General Public License as published by
@@ -26,6 +22,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  */
+
+/**
+ * @since      1.0.0
+ * @package    Serious_Daily_Writing_Habit\admin
+ */
+
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
